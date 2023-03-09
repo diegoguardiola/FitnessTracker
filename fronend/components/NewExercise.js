@@ -1,7 +1,9 @@
 import React, { useState } from 'react';
 import { View, ScrollView, Modal, Text, TouchableOpacity, TextInput, StyleSheet  } from 'react-native';
 import myExerciseList from './ExerciseList';
-import CreateNewSet from './NewSet';
+
+
+import Exercise from './ExerciseSets';
 
 
 const exercises = myExerciseList
@@ -25,12 +27,11 @@ const ExerciseList = () => {
     <View>
       <View>
         <View style={styles.ExerciseBox}>
-          {inputs.map((item, index) => (
+          {inputs.map((selectedItem, index) => (
             <View style={styles.ExerciseBoxMinor} key={index}>        {/* new set */}  
               <Text>Exercise{index+1}</Text>
               <Text>{selectedItem.name}</Text>
-              {/* new set button goes here */}
-              <CreateNewSet></CreateNewSet>
+              <Exercise></Exercise>
             </View>
           ))}
         </View>

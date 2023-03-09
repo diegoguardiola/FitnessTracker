@@ -43,7 +43,7 @@ router.put('/:id', async(req, res) => {
 })
 
 //posting new exercise
-router.post('/final', async (req, res) => {
+router.post('/', async (req, res) => {
     let exercise = new Exercises({
         Workout_ID: req.body.Workout_ID,            //if there are wrong entries see video 32 for code
         Exercise_Name: req.body.Exercise_Name,
