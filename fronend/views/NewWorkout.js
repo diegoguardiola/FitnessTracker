@@ -37,7 +37,7 @@ function NewWorkout() {
         <Text>New Workout</Text>
         <StatusBar style="auto" />
         <ExerciseList/>
-        <Button title="Submit" onPress={handleSubmit} />
+        
       </View>
     );
   }

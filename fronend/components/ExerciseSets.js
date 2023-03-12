@@ -1,11 +1,12 @@
 import React, { useState } from 'react';
 
+
 function Exercise() {
   const [newExerciseDocument, setNewExerciseDocument] = useState({
     Reps: '',
     Weight: '',
   });
-  const [exerciseDocuments, setExerciseDocuments] = useState([]);
+   const [exerciseDocuments, setExerciseDocuments] = useState([]);
 
   const handleInputChange = (event) => {
     const { name, value } = event.target;
@@ -16,8 +17,6 @@ function Exercise() {
     event.preventDefault();
     setExerciseDocuments([...exerciseDocuments, newExerciseDocument]);
     setNewExerciseDocument({ Reps: '', Weight: ''});
-    console.log(newExerciseDocument)
-    console.log(exerciseDocuments)
   };
 
   return (
@@ -51,5 +50,5 @@ function Exercise() {
     </form>
   );
 }
-
+ export const exerciseDocuments = exerciseDocuments}
 export default Exercise;

@@ -1,41 +1,41 @@
 import React, { useState } from 'react';
-import { View, ScrollView, Modal, Text, TouchableOpacity, TextInput, StyleSheet  } from 'react-native';
+import { View, ScrollView, Modal, Picker, Text, TouchableOpacity, TextInput, StyleSheet, Button, FlatList  } from 'react-native';
 import myExerciseList from './ExerciseList';
-
-
-import Exercise from './ExerciseSets';
-
+import ExerciseView from './Sets';
 
 const exercises = myExerciseList
 
 const ExerciseList = () => {
-  //new exercise
-  const [inputs, setInputs] = useState([]);         //inputs for exercise list
-  const [visible, setVisible] = useState(false);    //visibility of list
-  const [selectedItem, setSelectedItem] = useState(null);
+
+  
+
+  const [views, setViews] = useState([]);
+  const [visible, setVisible] = useState(false);
+  const [selectedValue, setSelectedValue] = useState(null);
+
 
   const handlePress = (item) => {
-    // Do something with selected item
-    setInputs([...inputs, ""]);           //takes previous list config and adds an empty string?
+    setSelectedValue(item)
+    const newView = <View  key={views.length} >
+                      <Text>Exercise: {item.name}</Text>
+                      <ExerciseView></ExerciseView>
+                    </View>;
+    setViews([...views, newView]);
     setVisible(false);
-    setSelectedItem(item);
+    console.log(myData)
   };
-
 
 
   return (
     <View>
-      <View>
-        <View style={styles.ExerciseBox}>
-          {inputs.map((selectedItem, index) => (
-            <View style={styles.ExerciseBoxMinor} key={index}>        {/* new set */}  
-              <Text>Exercise{index+1}</Text>
-              <Text>{selectedItem.name}</Text>
-              <Exercise></Exercise>
-            </View>
-          ))}
-        </View>
-        <TouchableOpacity onPress={() => setVisible(true)}>
+      {/* Render the views */}
+      <View style={styles.ExerciseBox}>
+        {views}
+      </View>
+     
+
+      {/* Add a new view */}
+      <TouchableOpacity onPress={() => setVisible(true)}>
           <Text>Select an Exercise</Text>
         </TouchableOpacity>
         <Modal visible={visible}>
@@ -50,26 +50,18 @@ const ExerciseList = () => {
             </TouchableOpacity>
           </ScrollView>
         </Modal>
-      </View>
+        <Button title="Submit All" />
     </View>
-
   );
-};
+}
 
 const styles = StyleSheet.create({
   ExerciseBox: {
+    flex: 1,
     flexDirection: 'column',
     borderWidth: 2,
     borderRadius: 5
-  },
-  ExerciseBoxMinor: {
-    flexDirection: 'column',
-    padding: 5,
-    margin: 10,
-    borderWidth: 2,
-    borderRadius: 5
-  },
+  }
 })
-
 
 export default ExerciseList;
