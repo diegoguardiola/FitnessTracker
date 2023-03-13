@@ -62,7 +62,7 @@ export const ExerciseView = ({ onData, exerciseName }) => {
             )}
         </View>
         <Button title="Send Data to Parent" 
-        onPress={handleButtonClick(); handlePress();} />
+        onPress={() => {handleButtonClick(); handlePress();}} />
       </View>
     );
   };
