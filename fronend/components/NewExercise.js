@@ -10,7 +10,7 @@ const ExerciseList = () => {
   const [dataFromChild, setDataFromChild] = useState([]);
 
   const handleChildData = (data) => {
-    [... dataFromChild, setDataFromChild(data)];
+    setDataFromChild([...dataFromChild, data]);
   };
 
   const [views, setViews] = useState([]);
