@@ -2,8 +2,16 @@ import React, { useState } from 'react';
 import { View, ScrollView, Modal, Picker, Text, TouchableOpacity, TextInput, StyleSheet, Button, FlatList  } from 'react-native';
 
 
-const ExerciseView = ({ exerciseName }) => {
+export const ExerciseView = ({ onData, exerciseName }) => {
 
+
+    const [childData, setChildData] = useState([]);
+  
+    const handleButtonClick = () => {
+      
+      setChildData(data);
+      onData(data);
+    };
 
     const [setInfo, setSetInfo] = useState({ weight: "", reps: "" });
     const [data, setData] = useState({});
@@ -17,6 +25,7 @@ const ExerciseView = ({ exerciseName }) => {
         ]
       }));
       setSetInfo({ weight: "", reps: "" });
+      console.log(exerciseName)
       console.log(data)
     };
   
@@ -35,7 +44,7 @@ const ExerciseView = ({ exerciseName }) => {
           onChangeText={text => setSetInfo(prevSetInfo => ({ ...prevSetInfo, reps: text }))}
         />
         <Button
-          title="Submit"
+          title="Add Set"
           onPress={handlePress}
         />
         <View style={styles.SetDataBox}>
@@ -52,6 +61,7 @@ const ExerciseView = ({ exerciseName }) => {
             />
             )}
         </View>
+        <Button title="Send Data to Parent" onPress={handleButtonClick} />
       </View>
     );
   };
@@ -65,4 +75,3 @@ const ExerciseView = ({ exerciseName }) => {
     } ,
   })
 
-  export default ExerciseView

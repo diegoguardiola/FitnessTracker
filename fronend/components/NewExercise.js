@@ -1,13 +1,17 @@
 import React, { useState } from 'react';
 import { View, ScrollView, Modal, Picker, Text, TouchableOpacity, TextInput, StyleSheet, Button, FlatList  } from 'react-native';
 import myExerciseList from './ExerciseList';
-import ExerciseView from './Sets';
+import {ExerciseView} from './Sets';
 
 const exercises = myExerciseList
 
 const ExerciseList = () => {
 
-  
+  const [dataFromChild, setDataFromChild] = useState([]);
+
+  const handleChildData = (data) => {
+    [... dataFromChild, setDataFromChild(data)];
+  };
 
   const [views, setViews] = useState([]);
   const [visible, setVisible] = useState(false);
@@ -18,12 +22,20 @@ const ExerciseList = () => {
     setSelectedValue(item)
     const newView = <View  key={views.length} >
                       <Text>Exercise: {item.name}</Text>
-                      <ExerciseView></ExerciseView>
+                      <ExerciseView exerciseName={item.name} onData={handleChildData} ></ExerciseView>
                     </View>;
     setViews([...views, newView]);
     setVisible(false);
-    console.log(myData)
   };
+
+  const submitAll = (e) => {
+    e.preventDefault()
+    const viewAll = views.map((item) => {
+      return item
+    })
+    console.log(dataFromChild)
+  }
+
 
 
   return (
@@ -50,7 +62,7 @@ const ExerciseList = () => {
             </TouchableOpacity>
           </ScrollView>
         </Modal>
-        <Button title="Submit All" />
+        <Button title="Submit All" onPress={submitAll} />
     </View>
   );
 }
