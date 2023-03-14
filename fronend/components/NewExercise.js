@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import axios from 'axios';
 import { View, ScrollView, Modal, Picker, Text, TouchableOpacity, TextInput, StyleSheet, Button, FlatList  } from 'react-native';
 import myExerciseList from './ExerciseList';
 import {ExerciseView} from './Sets';
@@ -28,12 +29,18 @@ const ExerciseList = () => {
     setVisible(false);
   };
 
-  const submitAll = (e) => {
-    e.preventDefault()
-    const viewAll = views.map((item) => {
-      return item
-    })
-    console.log(dataFromChild)
+  const submitAll = async (event) => {
+    event.preventDefault()
+
+    const dataSend = JSON.stringify(dataFromChild)
+
+    try {
+      const response = await axios.post('http://localhost:3000/api/v1/myworkouts', dataSend);
+      console.log(response.data);
+    } catch (error) {
+      console.error(error);
+    }
+    console.log(dataSend)
   }
 
 
@@ -69,10 +76,11 @@ const ExerciseList = () => {
 
 const styles = StyleSheet.create({
   ExerciseBox: {
-    flex: 1,
     flexDirection: 'column',
+    alignItems: 'center',
     borderWidth: 2,
-    borderRadius: 5
+    borderRadius: 5,
+    width: 500,
   }
 })
 
