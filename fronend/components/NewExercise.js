@@ -18,6 +18,16 @@ const ExerciseList = () => {
   const [visible, setVisible] = useState(false);
   const [selectedValue, setSelectedValue] = useState(null);
 
+  //Form data to be sent to the database
+  const [formData, setFormData] = useState({
+    exercises: [{
+      exerciseName: '',
+      sets: [{
+        weight: '',
+        reps: ''
+      }]
+    }]
+  })
 
   const handlePress = (item) => {
     setSelectedValue(item)
@@ -31,11 +41,30 @@ const ExerciseList = () => {
 
   const submitAll = async (event) => {
     event.preventDefault()
-
     const dataSend = JSON.stringify(dataFromChild)
+    console.log(dataSend)
 
+    const updatedFormData = dataFromChild.map((exercise) => {
+      const exerciseName = Object.keys(exercise)[0]
+      const sets = exercise[exerciseName].map((set) => {
+        return {
+          weight: set.weight,
+          reps: set.reps
+        }
+      })
+      return {
+        exerciseName,
+        sets
+      }
+    })
+    setFormData({
+      exercises: updatedFormData
+    })
+    
+    console.log(formData)
+      
     try {
-      const response = await axios.post('http://localhost:3000/api/v1/myworkouts', dataSend);
+      const response = await axios.post('http://localhost:3000/api/v1/myworkouts', formData);
       console.log(response.data);
     } catch (error) {
       console.error(error);

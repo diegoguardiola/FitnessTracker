@@ -20,8 +20,11 @@ router.get('/:id', getExercise, (req, res) => {
 // Create a new exercise
 router.post('/', async (req, res) => {
   const exercise = new Exercise({
-    exercises: req.body.exercises
-
+    exercises: req.body.exercises,
+    exerciseName: req.body.exerciseName,
+    sets: req.body.sets,  
+    weight: req.body.weight,
+    reps: req.body.reps,
   });
   try {
     const newExercise = await exercise.save();
