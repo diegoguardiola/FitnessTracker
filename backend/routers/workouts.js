@@ -2,21 +2,7 @@ const express = require('express');
 const router = express.Router();
 const Exercise = require('../models/workouts');
 
-// Get all exercises
-router.get('/', async (req, res) => {
-  try {
-    const exercises = await Exercise.find();
-    res.json(exercises);
-  } catch (err) {
-    res.status(500).json({ message: err.message });
-  }
-});
-
-// Get a single exercise
-router.get('/:id', getExercise, (req, res) => {
-  res.json(res.exercise);
-});
-
+/*
 // Create new exercises
 router.post('/', async (req, res) => {
   try {
@@ -30,6 +16,8 @@ router.post('/', async (req, res) => {
     // Save each exercise in the database
     const exercises = exercisesData.map((exerciseData) => {
       const exercise = new Exercise({
+        startTime: exerciseData.startTime,
+        endTime: exerciseData.endTime,
         exerciseName: exerciseData.exerciseName,
         sets: exerciseData.sets,
       });
@@ -44,16 +32,16 @@ router.post('/', async (req, res) => {
   } catch (err) {
     res.status(400).json({ message: err.message });
   }
-});
+});*/
 
 // Create a new exercise
-router.post('/test', async (req, res) => {
+router.post('/', async (req, res) => {
   const exercise = new Exercise({
-    exerciseName: req.body.exerciseName,
-    sets: req.body.sets,  
-    weight: req.body.weight,
-    reps: req.body.reps,
+    startTime: req.body.startTime,
+    endTime: req.body.endTime,
+    exercises: req.body.exercises,
   });
+
   try {
     const newExercise = await exercise.save();
     res.status(201).json(newExercise);
@@ -62,28 +50,6 @@ router.post('/test', async (req, res) => {
   }
 });
 
-// Update an exercise
-router.patch('/:id', getExercise, async (req, res) => {
-  if (req.body.exercises) {
-    res.exercise.exercises = req.body.exercises;
-  }
-  try {
-    const updatedExercise = await res.exercise.save();
-    res.json(updatedExercise);
-  } catch (err) {
-    res.status(400).json({ message: err.message });
-  }
-});
-
-// Delete an exercise
-router.delete('/:id', getExercise, async (req, res) => {
-  try {
-    await res.exercise.remove();
-    res.json({ message: 'Exercise deleted' });
-  } catch (err) {
-    res.status(500).json({ message: err.message });
-  }
-});
 
 // Middleware function to get a single exercise by ID
 async function getExercise(req, res, next) {
