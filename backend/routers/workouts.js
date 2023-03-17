@@ -17,10 +17,38 @@ router.get('/:id', getExercise, (req, res) => {
   res.json(res.exercise);
 });
 
-// Create a new exercise
+// Create new exercises
 router.post('/', async (req, res) => {
+  try {
+    const exercisesData = req.body.exercises;
+
+    // Validate that exercisesData is an array
+    if (!Array.isArray(exercisesData)) {
+      return res.status(400).json({ message: 'Invalid data format. Expected an array of exercises.' });
+    }
+
+    // Save each exercise in the database
+    const exercises = exercisesData.map((exerciseData) => {
+      const exercise = new Exercise({
+        exerciseName: exerciseData.exerciseName,
+        sets: exerciseData.sets,
+      });
+      return exercise.save();
+    });
+
+    // Wait for all exercises to be saved
+    const newExercises = await Promise.all(exercises);
+
+    // Respond with the created exercises
+    res.status(201).json(newExercises);
+  } catch (err) {
+    res.status(400).json({ message: err.message });
+  }
+});
+
+// Create a new exercise
+router.post('/test', async (req, res) => {
   const exercise = new Exercise({
-    exercises: req.body.exercises,
     exerciseName: req.body.exerciseName,
     sets: req.body.sets,  
     weight: req.body.weight,

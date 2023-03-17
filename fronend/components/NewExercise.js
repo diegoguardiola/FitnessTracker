@@ -1,78 +1,62 @@
 import React, { useState } from 'react';
 import axios from 'axios';
-import { View, ScrollView, Modal, Picker, Text, TouchableOpacity, TextInput, StyleSheet, Button, FlatList  } from 'react-native';
+import { View, ScrollView, Modal, Picker, Text, TouchableOpacity, TextInput, StyleSheet, Button, FlatList } from 'react-native';
 import myExerciseList from './ExerciseList';
-import {ExerciseView} from './Sets';
+import { ExerciseView } from './Sets';
 
-const exercises = myExerciseList
+const exercises = myExerciseList;
 
 const ExerciseList = () => {
-
   const [dataFromChild, setDataFromChild] = useState([]);
 
   const handleChildData = (data) => {
     setDataFromChild([...dataFromChild, data]);
+    console.log(dataFromChild);
   };
 
   const [views, setViews] = useState([]);
   const [visible, setVisible] = useState(false);
   const [selectedValue, setSelectedValue] = useState(null);
 
-  //Form data to be sent to the database
-  const [formData, setFormData] = useState({
-    exercises: [{
-      exerciseName: '',
-      sets: [{
-        weight: '',
-        reps: ''
-      }]
-    }]
-  })
-
   const handlePress = (item) => {
-    setSelectedValue(item)
-    const newView = <View  key={views.length} >
-                      <Text>Exercise: {item.name}</Text>
-                      <ExerciseView exerciseName={item.name} onData={handleChildData} ></ExerciseView>
-                    </View>;
+    setSelectedValue(item);
+    const newView = (
+      <View key={views.length}>
+        <Text>Exercise: {item.name}</Text>
+        <ExerciseView exerciseName={item.name} onData={handleChildData}></ExerciseView>
+      </View>
+    );
     setViews([...views, newView]);
     setVisible(false);
   };
 
   const submitAll = async (event) => {
-    event.preventDefault()
-    const dataSend = JSON.stringify(dataFromChild)
-    console.log(dataSend)
+    event.preventDefault();
+    const dataSend = JSON.stringify(dataFromChild);
+    console.log(dataSend);
 
-    const updatedFormData = dataFromChild.map((exercise) => {
-      const exerciseName = Object.keys(exercise)[0]
+    const exercisesToSend = dataFromChild.map((exercise) => {
+      const exerciseName = Object.keys(exercise)[0];
       const sets = exercise[exerciseName].map((set) => {
         return {
           weight: set.weight,
-          reps: set.reps
-        }
-      })
+          reps: set.reps,
+        };
+      });
       return {
         exerciseName,
-        sets
-      }
-    })
-    setFormData({
-      exercises: updatedFormData
-    })
-    
-    console.log(formData)
-      
+        sets,
+      };
+    });
+
     try {
-      const response = await axios.post('http://localhost:3000/api/v1/myworkouts', formData);
+      const response = await axios.post('http://localhost:3000/api/v1/myworkouts', { exercises: exercisesToSend });
       console.log(response.data);
     } catch (error) {
       console.error(error);
     }
-    console.log(dataSend)
-  }
-
-
+    console.log(dataSend);
+  };
 
   return (
     <View>
