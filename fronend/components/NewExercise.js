@@ -108,6 +108,7 @@ const submitAll = async (event) => {
 };
   return (
     <View>
+      <ScrollView>
        {/* Render the clock */}
       <View style={styles.container}>
         <Text style={styles.timerText}>{formatTime(elapsedTime)}</Text>
@@ -142,6 +143,7 @@ const submitAll = async (event) => {
           </ScrollView>
         </Modal>
         <Button title="Submit All" onPress={submitAll} />
+    </ScrollView>
     </View>
   );
 }

@@ -1,26 +1,30 @@
-const {Profile} = require('../models/profiles')
-const express =require('express');
+// routes/profile.js
+
+const express = require('express');
 const router = express.Router();
+const Profile = require('../models/profiles');
 
-router.get(`/`, async (req, res) => {
-    const profile = await Profile.find()
-    res.send(profile);
-})
+// POST request for creating a new profile
+router.post('/', async (req, res) => {
+  const { firstName, lastName, email, age, height, weight, profilePicture } = req.body;
 
-router.post(`/newprofile`, (req, res) => {
+  try {
     const newProfile = new Profile({
-        fisrtName: req.body.firstName,
-        lastName: req.body.lastName,
-        age: req.body.age
-    })
-    newProfile.save().then((createdProfile => {
-        res.status(201).json(createdProfile)
-    })).catch((err) => {
-        res.status(500).json({
-            error: err,
-            success: false
-        })
-    })
-})
+      firstName,
+      lastName,
+      email,
+      age,
+      height,
+      weight,
+      profilePicture,
+    });
+
+    const profile = await newProfile.save();
+    res.json(profile);
+  } catch (err) {
+    console.error(err.message);
+    res.status(500).send('Server Error');
+  }
+});
 
 module.exports = router;
