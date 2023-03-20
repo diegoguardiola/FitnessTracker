@@ -26,5 +26,14 @@ router.post('/', async (req, res) => {
     res.status(500).send('Server Error');
   }
 });
+// Fetch all profiles
+router.get('/', async (req, res) => {
+  try {
+    const profiles = await Profile.find();
+    res.json(profiles);
+  } catch (err) {
+    res.status(500).json({ message: err.message });
+  }
+});
 
 module.exports = router;

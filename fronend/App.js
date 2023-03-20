@@ -6,12 +6,14 @@ import { NavigationContainer } from '@react-navigation/native';
 
 import NewWorkout from './views/NewWorkout';
 import ProfileForm from './views/Profile';
+import Home from './views/Home';
 
 const Tab = createBottomTabNavigator();
 
 function MyTabs(){
   return (
     <Tab.Navigator>
+      <Tab.Screen name="Home" component={Home} />
       <Tab.Screen name="New Workout" component={NewWorkout} />
       <Tab.Screen name="Profile" component={ProfileForm} />
     </Tab.Navigator>
