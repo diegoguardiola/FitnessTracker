@@ -1,13 +1,12 @@
 import React, {useState} from 'react';
 import {
-  View,
-  Text,
-  TextInput,
-  TouchableOpacity,
-  StyleSheet,
+  View, Text, TextInput,
+  TouchableOpacity, StyleSheet,
+  SafeAreaView,
 } from 'react-native';
 import * as ImagePicker from 'expo-image-picker';
 import axios from 'axios';
+import { SafeAreaProvider } from 'react-native-safe-area-context';
 
 const ProfileForm = () => {
   const [firstName, setFirstName] = useState('');
@@ -55,53 +54,56 @@ const pickImage = async () => {
   };
 
   return (
-    <View style={styles.container}>
-      <TextInput
-        style={styles.input}
-        value={firstName}
-        onChangeText={setFirstName}
-        placeholder="First Name"
-      />
-      <TextInput
-        style={styles.input}
-        value={lastName}
-        onChangeText={setLastName}
-        placeholder="Last Name"
-      />
-      <TextInput
-        style={styles.input}
-        value={email}
-        onChangeText={setEmail}
-        placeholder="Email"
-      />
-      <TextInput
-        style={styles.input}
-        value={age}
-        onChangeText={setAge}
-        placeholder="Age"
-        keyboardType="numeric"
-      />
-      <TextInput
-        style={styles.input}
-        value={height}
-        onChangeText={setHeight}
-        placeholder="Height (cm)"
-        keyboardType="numeric"
-      />
-      <TextInput
-        style={styles.input}
-        value={weight}
-        onChangeText={setWeight}
-        placeholder="Weight (kg)"
-        keyboardType="numeric"
-      />
-      <TouchableOpacity onPress={pickImage} style={styles.button}>
-        <Text style={styles.buttonText}>Pick Profile Picture</Text>
-      </TouchableOpacity>
-      <TouchableOpacity onPress={handleSubmit} style={styles.button}>
-        <Text style={styles.buttonText}>Submit</Text>
-      </TouchableOpacity>
-    </View>
+    <SafeAreaProvider style={styles.container}>
+      <SafeAreaView >
+        <TextInput
+          style={styles.input}
+          value={firstName}
+          onChangeText={setFirstName}
+          placeholder="First Name"
+        />
+        <TextInput
+          style={styles.input}
+          value={lastName}
+          onChangeText={setLastName}
+          placeholder="Last Name"
+        />
+        <TextInput
+          style={styles.input}
+          value={email}
+          onChangeText={setEmail}
+          placeholder="Email"
+        />
+        <TextInput
+          style={styles.input}
+          value={age}
+          onChangeText={setAge}
+          placeholder="Age"
+          keyboardType="numeric"
+        />
+        <TextInput
+          style={styles.input}
+          value={height}
+          onChangeText={setHeight}
+          placeholder="Height (cm)"
+          keyboardType="numeric"
+        />
+        <TextInput
+          style={styles.input}
+          value={weight}
+          onChangeText={setWeight}
+          placeholder="Weight (kg)"
+          keyboardType="numeric"
+        />
+        <TouchableOpacity onPress={pickImage} style={styles.button}>
+          <Text style={styles.buttonText}>Pick Profile Picture</Text>
+        </TouchableOpacity>
+        <TouchableOpacity onPress={handleSubmit} style={styles.button}>
+          <Text style={styles.buttonText}>Submit</Text>
+        </TouchableOpacity>
+      </SafeAreaView>
+    </SafeAreaProvider>
+  
   );
 };
 
@@ -109,20 +111,23 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     justifyContent: 'center',
-    paddingHorizontal: 10,
+    backgroundColor: '#04151F'
   },
   input: {
     height: 40,
     borderColor: 'gray',
+    backgroundColor: '#EFEFE6',
     borderWidth: 1,
     marginBottom: 10,
+    marginHorizontal: 35,
     paddingHorizontal: 8,
   },
   button: {
-    backgroundColor: '#007AFF',
+    backgroundColor: '#955E42',
     padding: 10,
     borderRadius: 5,
     marginBottom: 10,
+    marginHorizontal: 35,
   },
   buttonText: {
     color: 'white',

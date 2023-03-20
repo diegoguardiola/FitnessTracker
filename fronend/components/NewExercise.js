@@ -1,6 +1,10 @@
 import React, { useState, useEffect, useRef } from 'react';
 import axios from 'axios';
-import { View, ScrollView, Modal, Text, TouchableOpacity, StyleSheet, Button } from 'react-native';
+import { 
+  View, ScrollView, Modal, 
+  Text, TouchableOpacity, StyleSheet, 
+  FlatList 
+} from 'react-native';
 import myExerciseList from './ExerciseList';
 import { ExerciseView } from './Sets';
 
@@ -107,31 +111,33 @@ const submitAll = async (event) => {
   }
 };
   return (
-    <View>
+    <View style={styles.container}>
       <ScrollView>
        {/* Render the clock */}
-      <View style={styles.container}>
-        <Text style={styles.timerText}>{formatTime(elapsedTime)}</Text>
-        <View style={styles.buttonContainer}>
-          <TouchableOpacity style={styles.startButton} onPress={startTimer}>
-            <Text style={styles.buttonText}>Start</Text>
-          </TouchableOpacity>
-          <TouchableOpacity style={styles.finishButton} onPress={finishTimer}>
-            <Text style={styles.buttonText}>Finish</Text>
-          </TouchableOpacity>
+        <View style={styles.timeContainer}>
+          <Text style={styles.timerText}>{formatTime(elapsedTime)}</Text>
+          <View style={styles.timeButtonContainer}>
+            <TouchableOpacity style={styles.startButton} onPress={startTimer}>
+              <Text style={styles.buttonText}>Start</Text>
+            </TouchableOpacity>
+            <TouchableOpacity style={styles.finishButton} onPress={finishTimer}>
+              <Text style={styles.buttonText}>Finish</Text>
+            </TouchableOpacity>
+          </View>
         </View>
-      </View>
-      {/* Render the views */}
-      <View style={styles.ExerciseBox}>
-        {views}
-      </View>
-
-      {/* Add a new view */}
-      <TouchableOpacity onPress={() => setVisible(true)}>
-          <Text>Select an Exercise</Text>
+        {/* Render the views */}
+        <View style={styles.ExerciseBox}>
+          {views}
+        </View>
+        {/* Add a new view */}
+        <TouchableOpacity onPress={() => setVisible(true)}>
+            <Text style={{color: '#6B818C', alignSelf: 'center'}}>Select an Exercise</Text>
         </TouchableOpacity>
         <Modal visible={visible}>
-          <ScrollView>
+          <ScrollView 
+            ontentContainerStyle={styles.scrollViewContainer} 
+            contentInset={{top: 10, left: 10, bottom: 10, right: 10}}
+            bounces='true'>
             {exercises.map((item) => (
               <TouchableOpacity key={item.id} onPress={() => handlePress(item)}>
                 <Text>{item.name}</Text>
@@ -142,41 +148,68 @@ const submitAll = async (event) => {
             </TouchableOpacity>
           </ScrollView>
         </Modal>
-        <Button title="Submit All" onPress={submitAll} />
-    </ScrollView>
+        {/* Submit All */}
+        <TouchableOpacity onPress={submitAll} style={styles.submitAllButton}>
+          <Text style={styles.buttonText}>Submit All</Text>
+        </TouchableOpacity>
+      </ScrollView>
     </View>
   );
 }
 
 const styles = StyleSheet.create({
+  container: {
+    flexDirection: 'column',
+    alignItems: 'center',
+  },
+  scrollView: {
+    flexDirection: 'column',
+    alignItems: 'center',
+  },
   ExerciseBox: {
     flexDirection: 'column',
     alignItems: 'center',
-    borderWidth: 2,
-    borderRadius: 5,
-    width: 500,
   },
-  container: {
+  timeContainer: {
+    flexDirection: 'column',
     alignItems: 'center',
+    margin: 10
   },
   timerText: {
-    fontSize: 48,
+    fontSize: 38,
+    color: '#6B818C'
   },
-  buttonContainer: {
+  timeButtonContainer: {
     flexDirection: 'row',
     justifyContent: 'center',
     marginTop: 16,
   },
   startButton: {
-    backgroundColor: 'green',
+    backgroundColor: '#6B818C',
+    color: '#EFEFE6',
     padding: 8,
     borderRadius: 4,
     marginRight: 8,
   },
   finishButton: {
-    backgroundColor: 'red',
+    backgroundColor: '#6B818C',
+    color: '#EFEFE6',
     padding: 8,
     borderRadius: 4,
+  },
+  scrollViewContainer: {
+    alignItems: 'center',
+    width: 450
+  },
+  submitAllButton: {
+    backgroundColor: '#955E42',
+    alignSelf: 'center',
+    alignItems: 'center',
+    width: 300,
+    padding: 10,
+    borderRadius: 5,
+    marginTop: 20,
+    marginBottom: 10,
   },
   buttonText: {
     color: 'white',

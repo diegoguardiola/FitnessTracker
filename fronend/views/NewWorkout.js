@@ -1,8 +1,13 @@
 import ExerciseList from "../components/NewExercise";
-import { StyleSheet, Text, View, TouchableOpacity, StatusBar, Button } from 'react-native';
+import { 
+  StyleSheet, Text, View, 
+  TouchableOpacity, StatusBar, 
+  Button, SafeAreaView 
+} from 'react-native';
 import axios from "axios";
 import React from "react";
 import { useState } from 'react';
+import { SafeAreaProvider } from 'react-native-safe-area-context';
 
 
 function NewWorkout() {
@@ -33,14 +38,34 @@ function NewWorkout() {
     
       }
     return (
-      <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
-        <Text>New Workout</Text>
-        <StatusBar style="auto" />
-        <ExerciseList/>
-        
-      </View>
+      <SafeAreaProvider style={styles.container}>
+        <SafeAreaView>
+        <View style={styles.headerContainer}>
+          <Text style={styles.headerText}>New Workout</Text>
+          <StatusBar style="auto" />
+          <ExerciseList/>
+        </View>
+        </SafeAreaView>
+      </SafeAreaProvider>
+
     );
   }
+
+  const styles = StyleSheet.create({
+    container: {
+      flex: 1,
+      justifyContent: 'center',
+      backgroundColor: '#04151F'
+    },
+    headerContainer: {
+      flex: 1,
+      alignItems: 'center'
+    },
+    headerText: {
+      fontSize: 44,
+      color: '#9C914F',
+    }
+  });
 
   export default NewWorkout;
 
