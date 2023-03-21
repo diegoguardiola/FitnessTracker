@@ -3,14 +3,15 @@ import axios from 'axios';
 import { 
   View, ScrollView, Modal, 
   Text, TouchableOpacity, StyleSheet, 
-  FlatList 
+  TextInput,
 } from 'react-native';
 import myExerciseList from './ExerciseList';
 import { ExerciseView } from './Sets';
 
-const exercises = myExerciseList;
+
 
 const ExerciseList = () => {
+  const exercises = myExerciseList;
   //timer function
   const [isRunning, setIsRunning] = useState(false);
   const startTimeRef = useRef(null);
@@ -69,13 +70,21 @@ const ExerciseList = () => {
   const handlePress = (item) => {
     setSelectedValue(item);
     const newView = (
-      <View key={views.length}>
-        <Text>Exercise: {item.name}</Text>
+      <View key={item.id}>
+        <Text style={{color: '#DEDECE', fontSize: 18, padding: 5}}>Exercise: {item.name}</Text>
         <ExerciseView exerciseName={item.name} onData={handleChildData}></ExerciseView>
       </View>
     );
     setViews([...views, newView]);
     setVisible(false);
+  };
+    // Add a state for searchTerm adn Create a function to filter exercises based on the search term
+  const [searchTerm, setSearchTerm] = useState('');
+
+  const filterExercises = (term) => {
+    return exercises.filter((exercise) =>
+      exercise.name.toLowerCase().includes(term.toLowerCase())
+    );
   };
 //submitsall data to backend
 const submitAll = async (event) => {
@@ -111,49 +120,60 @@ const submitAll = async (event) => {
   }
 };
   return (
-    <View style={styles.container}>
-      <ScrollView>
-       {/* Render the clock */}
-        <View style={styles.timeContainer}>
-          <Text style={styles.timerText}>{formatTime(elapsedTime)}</Text>
-          <View style={styles.timeButtonContainer}>
-            <TouchableOpacity style={styles.startButton} onPress={startTimer}>
-              <Text style={styles.buttonText}>Start</Text>
-            </TouchableOpacity>
-            <TouchableOpacity style={styles.finishButton} onPress={finishTimer}>
-              <Text style={styles.buttonText}>Finish</Text>
-            </TouchableOpacity>
-          </View>
-        </View>
-        {/* Render the views */}
-        <View style={styles.ExerciseBox}>
-          {views}
-        </View>
-        {/* Add a new view */}
-        <TouchableOpacity onPress={() => setVisible(true)}>
-            <Text style={{color: '#6B818C', alignSelf: 'center'}}>Select an Exercise</Text>
-        </TouchableOpacity>
-        <Modal visible={visible}>
-          <ScrollView 
-            ontentContainerStyle={styles.scrollViewContainer} 
-            contentInset={{top: 10, left: 10, bottom: 10, right: 10}}
-            bounces='true'>
-            {exercises.map((item) => (
-              <TouchableOpacity key={item.id} onPress={() => handlePress(item)}>
-                <Text>{item.name}</Text>
+        <View style={styles.container}>
+          <ScrollView>
+          {/* Render the clock */}
+            <View style={styles.timeContainer}>
+              <Text style={styles.timerText}>{formatTime(elapsedTime)}</Text>
+              <View style={styles.timeButtonContainer}>
+                <TouchableOpacity style={styles.startButton} onPress={startTimer}>
+                  <Text style={styles.buttonText}>Start</Text>
+                </TouchableOpacity>
+                <TouchableOpacity style={styles.finishButton} onPress={finishTimer}>
+                  <Text style={styles.buttonText}>Finish</Text>
+                </TouchableOpacity>
+              </View>
+            </View>
+            {/* Render the views */}
+            <View style={styles.ExerciseBox}>
+              {views}
+            </View>
+            {/* Add a new view */}
+            <View>
+              <TouchableOpacity onPress={() => setVisible(true)}>
+                  <Text style={{color: '#6B818C', alignSelf: 'center', fontSize: 20}}>Select an Exercise</Text>
               </TouchableOpacity>
-            ))}
-            <TouchableOpacity onPress={() => setVisible(false)}>
-              <Text>Cancel</Text>
+              <Modal visible={visible} >
+                <ScrollView 
+                  contentContainerStyle={styles.scrollViewContainer} 
+                  contentInset={{top: 10, left: 10, bottom: 10, right: 10}}
+                  bounces='true'>
+                    <TextInput
+                      style={styles.searchBar}
+                      placeholder="Search for exercises..."
+                      onChangeText={(text) => setSearchTerm(text)}
+                      value={searchTerm}
+                    />
+                    {filterExercises(searchTerm).map((item) => (
+                      <View style={styles.scrollViewCOntent} key={item.id}>
+                        <TouchableOpacity onPress={() => handlePress(item)}>
+                          <Text style={{color: '#041924'}}>{item.name}</Text>
+                        </TouchableOpacity>
+                      </View>
+                    ))}
+                  <TouchableOpacity onPress={() => setVisible(false)}>
+                    <Text>Cancel</Text>
+                  </TouchableOpacity>
+                </ScrollView>
+              </Modal>
+            </View>
+            {/* Submit All */}
+            <TouchableOpacity onPress={submitAll} style={styles.submitAllButton}>
+              <Text style={styles.buttonText}>Submit All</Text>
             </TouchableOpacity>
           </ScrollView>
-        </Modal>
-        {/* Submit All */}
-        <TouchableOpacity onPress={submitAll} style={styles.submitAllButton}>
-          <Text style={styles.buttonText}>Submit All</Text>
-        </TouchableOpacity>
-      </ScrollView>
-    </View>
+        </View>
+
   );
 }
 
@@ -169,6 +189,9 @@ const styles = StyleSheet.create({
   ExerciseBox: {
     flexDirection: 'column',
     alignItems: 'center',
+    borderColor: '#A39752',
+     borderWidth: 2,
+     borderRadius: 10,
   },
   timeContainer: {
     flexDirection: 'column',
@@ -196,16 +219,38 @@ const styles = StyleSheet.create({
     color: '#EFEFE6',
     padding: 8,
     borderRadius: 4,
+  }, 
+  newContentContainer: {
+    alignItems: 'center',
+    alignItems: 'center',
+    width: '%90',
   },
   scrollViewContainer: {
+    alignSelf: 'center',
     alignItems: 'center',
-    width: 450
+    width: '95%',
+    backgroundColor: '#AEBBC1'
+  },
+  searchBar: {
+    padding: 8,
+    height: 30,
+    width: 250,
+    borderColor: '#041924',
+    borderRadius: 5,
+    borderWidth: 1,
+    marginBottom: 5,
+    fontSize: 15
+  },
+  scrollViewCOntent: {
+    alignSelf: 'center',
+    height: 22,
+    fontSize: 15
   },
   submitAllButton: {
     backgroundColor: '#955E42',
     alignSelf: 'center',
     alignItems: 'center',
-    width: 300,
+    width: '50%',
     padding: 10,
     borderRadius: 5,
     marginTop: 20,
