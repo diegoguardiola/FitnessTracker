@@ -3,6 +3,7 @@ import { StyleSheet } from 'react-native';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import { NavigationContainer } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
+import Ionicons from '@expo/vector-icons/Ionicons';
 
 import NewWorkout from './views/NewWorkout';
 import ProfileForm from './views/Profile';
@@ -15,13 +16,26 @@ const Stack = createNativeStackNavigator();
 function MyTabs() {
   return (
     <Tab.Navigator
-      screenOptions={{
-        activeBackgroundColor: '#EFEFE6',
-        inactiveBackgroundColor: '#EFEFE6',
-        activeTintColor: '#04151F',
-        inactiveTintColor: '#6B818C'
-      }}
-    >
+    screenOptions={({ route }) => ({
+      tabBarIcon: ({ focused, color, size }) => {
+        let iconName;
+
+        if (route.name === 'Home') {
+          iconName = focused ? 'home' : 'home-outline';
+        } else if (route.name === 'New Workout') {
+          iconName = focused ? 'add-circle' : 'add-circle-outline';
+        } else if (route.name === 'Profile') {
+          iconName = focused ? 'person' : 'person-outline';
+        }
+
+        return <Ionicons name={iconName} size={size} color={color} />;
+      },
+      activeBackgroundColor: '#EFEFE6',
+      inactiveBackgroundColor: '#EFEFE6',
+      activeTintColor: '#04151F',
+      inactiveTintColor: '#6B818C',
+    })}
+  >
       <Tab.Screen name="Home" component={Home} />
       <Tab.Screen name="New Workout" component={NewWorkout} />
       <Tab.Screen name="Profile" component={ProfileForm} />

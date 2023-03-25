@@ -6,6 +6,7 @@ const api = process.env.API_URL;
 const profileRouter = require('./routers/profiles')
 const workoutRouter = require('./routers/workouts')
 const exerciseRouter = require('./routers/excercises')
+const userDataRouter = require('./routers/UserData')
 const morgan = require('morgan');
 const mongoose = require('mongoose');
 
@@ -24,6 +25,7 @@ app.use(morgan('tiny'))             //displays local request
 app.use(`${api}/myprofile`, profileRouter)
 app.use(`${api}/myworkouts`, workoutRouter)
 app.use(`${api}/myexercises`, exerciseRouter)
+app.use(`${api}/userdata`, userDataRouter)
 
 
 mongoose.connect(process.env.PROFILE_CONNECTION)

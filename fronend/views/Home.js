@@ -18,7 +18,7 @@ const Home = () => {
       .catch((error) => alert(error.message));
   };
 
-  useEffect(() => {
+  /*useEffect(() => {
     const fetchData = async () => {
       try {
         const response = await axios.get('http://localhost:3000/api/v1/myprofile');
@@ -29,7 +29,7 @@ const Home = () => {
     };
 
     fetchData();
-  }, []);
+  }, []);*/
 
   return (
     <View style={styles.container}>
@@ -60,7 +60,7 @@ const styles = StyleSheet.create({
     flex: 1,
     justifyContent: 'center',
     alignContent: 'center',
-    backgroundColor: '#04151F'
+    backgroundColor: '#fff'
   },
   profileInfoText: {
     fontSize: 25,

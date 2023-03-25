@@ -6,6 +6,7 @@ import { auth } from "../firebase";
 import { createUserWithEmailAndPassword } from 'firebase/auth';
 import { signInWithEmailAndPassword } from 'firebase/auth';
 import { onAuthStateChanged } from 'firebase/auth';
+import axios from "axios";
 
 const LoginScreen = () => {
     const [email, setEmail] = React.useState('');
@@ -25,13 +26,22 @@ const LoginScreen = () => {
         };
     }, []);
 
-
+    const submitUID = async (uid) => {
+        try {
+            const response = await axios.post("http://localhost:3000/api/v1/userdata/submitUID", { uid });
+          console.log(response.data.message);
+        } catch (error) {
+          console.error("Error submitting UID: ", error.message);
+        }
+      };
+      
 
     const handleSignUp = () => {
         createUserWithEmailAndPassword(auth, email, password)
           .then(userCredentials => {
             const user = userCredentials.user;
             console.log('Registered with: ', user.email);
+            submitUID(user.uid);
           })
           .catch((error) => alert(error.message));
       };
@@ -41,6 +51,7 @@ const LoginScreen = () => {
         .then(userCredentials => {
             const user = userCredentials.user;
             console.log('Logged In with: ', user.email);
+            submitUID(user.uid);
           })
           .catch((error) => alert(error.message));
       };
