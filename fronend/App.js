@@ -6,7 +6,7 @@ import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import Ionicons from '@expo/vector-icons/Ionicons';
 
 import NewWorkout from './views/NewWorkout';
-import ProfileForm from './views/Profile';
+import RegisterForm from './views/Register';
 import Home from './views/Home';
 import LoginScreen from './views/LoginScreen';
 
@@ -38,7 +38,7 @@ function MyTabs() {
   >
       <Tab.Screen name="Home" component={Home} />
       <Tab.Screen name="New Workout" component={NewWorkout} />
-      <Tab.Screen name="Profile" component={ProfileForm} />
+      <Tab.Screen name="Register" component={RegisterForm} />
     </Tab.Navigator>
   );
 }
