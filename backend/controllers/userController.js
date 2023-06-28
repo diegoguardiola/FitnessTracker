@@ -1,10 +1,8 @@
 const User = require('../models/userModel')
 const jwt = require('jsonwebtoken')
-require('dotenv/config');
-const secret = process.env.SECRET
 
 const createToken = (_id) => {
-  return jwt.sign({_id: _id}, secret, {expiresIn: '2d'})
+  return jwt.sign({_id}, process.env.SECRET, { expiresIn: '3d' })
 }
 
 // login a user
@@ -21,7 +19,6 @@ const loginUser = async (req, res) => {
   } catch (error) {
     res.status(400).json({error: error.message})
   }
-
 }
 
 // signup a user
